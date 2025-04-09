@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kubetools
+  name: kubetools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubetools
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: kubetools
+    spec:
+      containers:
+      - image: docker.io/nerdyzonky/kubetools:0.29
+        name: kubetools
+        command: ["/bin/sh", "-c", "tail -f /dev/null"]
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "mkdir -p  ~/.ssh && ln -s /root/data/.ssh/config ~/.ssh && rm -rf /root/data/.kube && mkdir -p /root/data/.kube && export KUBECONFIG=`ls -1 /kubeconfigs/*.yaml | paste -sd ':' -` && kubectl config view --merge --flatten > /root/data/.kube/kubeconfig.yaml && mkdir -p ~/data/.byobu && echo -n 'set-option -g default-shell /bin/zsh' > ~/data/.byobu/.tmux.conf"]
+        volumeMounts:
+        - name: data
+          mountPath: /root/data
+        - name: kubeconfigs
+          mountPath: /kubeconfigs
+        #- name: zshrc
+        #  mountPath: /root/data/.zshrc
+        #  subPath: zshrc
+        - name: sshconfig
+          mountPath: /root/data/.ssh/config
+          subPath: config
+        - name: gitkeys
+          mountPath: /root/data/.ssh/keys
+          readOnly: true
+        resources: {}
+        securityContext:
+          runAsUser: 0
+      volumes:
+      - name: kubeconfigs
+        secret:
+          secretName: kubetools-kubeconfig
+      - name: data
+        persistentVolumeClaim:
+          claimName: kubetools-pvc
+      #- name: zshrc
+      #  configMap:
+      #    name: zshrc
+      - name: sshconfig
+        configMap:
+          name: sshconfig
+      - name: gitkeys
+        secret:
+          secretName: gitkey
+          defaultMode: 256
