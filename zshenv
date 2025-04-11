@@ -11,6 +11,3 @@ if [[ -z "${ZDOTDIR-}" ]] && _x=("$HOME"/.z{shenv,profile,shrc,login}(N)) && (( 
     ZDOTDIR=${XDG_CONFIG_HOME:-$HOME/.config}/zsh
 fi
 unset _x
-
-
-##Hallo

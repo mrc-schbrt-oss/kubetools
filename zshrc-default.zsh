@@ -11,6 +11,8 @@ source $ZSH/oh-my-zsh.sh
 
 [[ ! -f ~/data/.p10k.zsh ]] || source ~/data/.p10k.zsh
 source <(kubectl completion zsh)
+source <(flux completion zsh)
+
 alias k=kubectl
 alias kx=kubectx
 alias kn=kubens

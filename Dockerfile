@@ -70,16 +70,6 @@ RUN VELERO_VERSION=$(curl -s https://api.github.com/repos/vmware-tanzu/velero/ta
   && chmod +x /usr/bin/velero \
   && rm -rf /velero*
 
-
-#RUN FLUX_VERSION=$(curl -s https://api.github.com/repos/fluxcd/flux2/releases/latest | jq -r .tag_name | cut -c 2-) \
-#  && GOOS=$(go env GOOS) \
-#  && GOARCH=$(go env GOARCH) \
-#  && curl -OL "https://github.com/fluxcd/flux2/releases/download/v${FLUX_VERSION}/flux_${FLUX_VERSION}_${GOOS}_${GOARCH}.tar.gz" \
-#  && tar -xzvf flux_${FLUX_VERSION}_${GOOS}_${GOARCH}.tar.gz \
-#  && mv flux /usr/bin \
-#  && chmod +x /usr/bin/flux \
-#  && rm -rf /flux*
-
 RUN set -x; cd "$(mktemp -d)" \
   && OS="$(uname | tr '[:upper:]' '[:lower:]')" \
   && ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" \
