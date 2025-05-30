@@ -36,5 +36,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/my-image:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/my-image:${{ steps.vars.outputs.DATE_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:${{ steps.vars.outputs.DATE_TAG }}
