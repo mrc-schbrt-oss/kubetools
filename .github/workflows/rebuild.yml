@@ -1,4 +1,4 @@
-name: Weekly Docker Build
+name: Kubetools container build
 
 on:
   schedule:
