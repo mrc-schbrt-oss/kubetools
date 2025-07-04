@@ -37,7 +37,42 @@ RUN set -x && cd "$(mktemp -d)" && \
   tar zxvf krew-${OS}_${ARCH}.tar.gz && \
   ./krew-${OS}_${ARCH} install krew && \
   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" && \
-  kubectl-krew install images ktop np-viewer outdated plogs rbac-tool sick-pods status stern view-allocations view-cert view-quotas view-secret view-utilization virt
+  #kubectl-krew install images ktop np-viewer outdated plogs rbac-tool sick-pods status stern view-allocations view-cert view-quotas view-secret view-utilization virt
+
+  case "$ARCH" in \
+    amd64) \
+      kubectl-krew install \
+        who-can \
+        view-secret \
+        resource-capacity \
+        kubesec-scan \
+        sort-manifests \
+        outdated \
+        status \
+        stern ;; \
+    arm64|arm) \
+      kubectl-krew install \
+        who-can \
+        oomd \
+        view-secret \
+        unused-volumes \
+        resource-capacity \
+        get-all \
+        neat \
+        topology \
+        pod-dive \
+        kubesec-scan \
+        sort-manifests \
+        deprecations \
+        rbac-view \
+        rbac-lookup \
+        access-matrix \
+        outdated \
+        status \
+        df-pv \
+        stern ;; \
+  esac
+
 
 COPY zshenv /etc/zsh/zshenv
 COPY ssh.conf /etc/ssh/ssh_config.d/ssh.conf
