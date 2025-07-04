@@ -45,7 +45,7 @@ RUN set -eux; \
   "./krew-${OS}_${ARCH}" install krew; \
   export PATH="${KREW_ROOT:-/root/.krew}/bin:$PATH"; \
   case "$ARCH" in \
-    amd64) \
+    arm64|arm) \
       kubectl-krew install \
         who-can \
         view-secret \
@@ -55,7 +55,7 @@ RUN set -eux; \
         outdated \
         status \
         stern ;; \
-    arm64|arm) \
+    amd64) \
       kubectl-krew install \
         who-can \
         oomd \
