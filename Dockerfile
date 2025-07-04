@@ -29,17 +29,21 @@ RUN apk add --no-cache \
   chmod +x /usr/bin/velero && \
   rm -rf velero*
 
-# Krew separat, weil es env setzt
-RUN set -x && cd "$(mktemp -d)" && \
-  OS="$(uname | tr '[:upper:]' '[:lower:]')" && \
-  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" && \
-  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz" && \
-  tar zxvf krew-${OS}_${ARCH}.tar.gz && \
-  ./krew-${OS}_${ARCH} install krew && \
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" 
-  #&& \
-  #kubectl-krew install images ktop np-viewer outdated plogs rbac-tool sick-pods status stern view-allocations view-cert view-quotas view-secret view-utilization virt
-
+# Krew separat, weil es env setzt + plugin-installation arch-spezifisch
+RUN set -eux; \
+  cd "$(mktemp -d)"; \
+  OS="$(uname | tr '[:upper:]' '[:lower:]')"; \
+  ARCH_RAW="$(uname -m)"; \
+  case "$ARCH_RAW" in \
+    x86_64) ARCH="amd64" ;; \
+    aarch64|arm64) ARCH="arm64" ;; \
+    arm*) ARCH="arm" ;; \
+    *) echo "Unsupported architecture: $ARCH_RAW" && exit 1 ;; \
+  esac; \
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz"; \
+  tar zxvf "krew-${OS}_${ARCH}.tar.gz"; \
+  "./krew-${OS}_${ARCH}" install krew; \
+  export PATH="${KREW_ROOT:-/root/.krew}/bin:$PATH"; \
   case "$ARCH" in \
     amd64) \
       kubectl-krew install \
@@ -73,7 +77,6 @@ RUN set -x && cd "$(mktemp -d)" && \
         df-pv \
         stern ;; \
   esac
-
 
 COPY zshenv /etc/zsh/zshenv
 COPY ssh.conf /etc/ssh/ssh_config.d/ssh.conf
