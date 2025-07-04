@@ -41,7 +41,7 @@ podman build -t kubetools .
 ### Run the container interactively
 
 ```bash
-podman run --rm  -it docker.io/nerdyzonky/kubetools:latest zs
+podman run --rm  -it docker.io/nerdyzonky/kubetools:latest zsh
 ```
 
 ### Mount kubeconfig and SSH keys
