@@ -36,7 +36,8 @@ RUN set -x && cd "$(mktemp -d)" && \
   curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-${OS}_${ARCH}.tar.gz" && \
   tar zxvf krew-${OS}_${ARCH}.tar.gz && \
   ./krew-${OS}_${ARCH} install krew && \
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" && \
+  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH" 
+  #&& \
   #kubectl-krew install images ktop np-viewer outdated plogs rbac-tool sick-pods status stern view-allocations view-cert view-quotas view-secret view-utilization virt
 
   case "$ARCH" in \
