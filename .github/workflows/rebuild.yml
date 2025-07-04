@@ -27,7 +27,7 @@ jobs:
 
       - name: Set image tag
         id: vars
-        run: echo "DATE_TAG=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        run: echo "DATE_TAG=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
 
       - name: Build and push multi-arch image
         uses: docker/build-push-action@v5
