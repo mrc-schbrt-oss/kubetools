@@ -28,7 +28,12 @@ alias ksick=kubectl-sick_pods
 alias kview-alloc=kubectl-view_allocations
 alias kview-quotas=kubectl-view_quotas
 alias kvirt=kubectl-virt
+
+
+rm -f /root/data/.kube/kubeconfig-flatten.yaml
 export KUBECONFIG=$(echo /root/data/.kube/*.yaml | tr ' ' ':')
+kubectl config view --flatten > /root/data/.kube/kubeconfig-flatten.yaml
+export KUBECONFIG=/root/data/.kube/kubeconfig-flatten.yaml
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_CONFIG_FILE=~/data/.ssh/config
 export HISTFILE=~/data/.zsh_history
