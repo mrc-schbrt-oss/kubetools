@@ -10,7 +10,7 @@
 
 ## ✨ Features
 
-- Preinstalled Kubernetes tools: `kubectl`, `helm`, `krew`, `k9s`, `flux`, `velero`, `kubeseal`, and more
+- Preinstalled Kubernetes tools: `kubectl`, `helm`, `krew`, `k9s`, `argo-cd`, `flux`, `velero`, `kubeseal`, and more
 - Fully configured ZSH environment with powerlevel10k theme
 - SSH and kubeconfig support
 - GitHub Actions workflows for automated container rebuilds
@@ -100,7 +100,7 @@ alias kaf='kubectl apply -f'
   - `zsh`, `powerlevel10k`, `byobu`
   - `bash`, `coreutils`, `findutils`, `file`
 - **Kubernetes & Cloud:**
-  - `kubectl`, `k9s`, `helm`, `flux`, `velero`, `kubeseal`, `krew`
+  - `kubectl`, `k9s`, `helm`, `argo-cd`, `flux`, `velero`, `kubeseal`, `krew`
 - **Configuration & Automation:**
   - `ansible`, `yq`, `jq`, `gettext`, `envsubst`
 - **Networking & SSH:**
