@@ -1,5 +1,9 @@
 # kubetools
 
+
+![Banner](./assets/kubetools-logo-optimized.jpg)
+
+
 **kubetools** is a lightweight containerized DevOps toolkit designed for Kubernetes operators, SREs, and platform engineers. It combines essential CLI tools like `kubectl`, `helm`, `k9s`, `flux`, and more within a pre-configured shell environment, making it ideal for local or in-cluster use.
 
 ---
