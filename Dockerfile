@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-    zsh git curl rsync vim tar openssh-client go jq yq \
+    zsh bash git curl rsync vim tar openssh-client go jq yq \
     byobu ansible-core ansible-lint \
     kubectl helm kubectx k9s flux \
     oh-my-zsh zsh-theme-powerlevel10k && \
