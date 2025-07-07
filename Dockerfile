@@ -82,4 +82,10 @@ COPY zshenv /etc/zsh/zshenv
 COPY ssh.conf /etc/ssh/ssh_config.d/ssh.conf
 COPY zshrc-default.zsh /etc/zsh/zshrc.d/zhsrc-default.zsh
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+
 WORKDIR /root/data
