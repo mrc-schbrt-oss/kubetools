@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-    zsh git curl rsync vim tar openssh-client go jq yq \
+    zsh bash git curl rsync vim tar openssh-client go jq yq \
     byobu ansible-core ansible-lint \
     kubectl helm kubectx k9s flux \
     oh-my-zsh zsh-theme-powerlevel10k && \
@@ -77,6 +77,12 @@ RUN set -eux; \
         df-pv \
         stern ;; \
   esac
+
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 COPY zshenv /etc/zsh/zshenv
 COPY ssh.conf /etc/ssh/ssh_config.d/ssh.conf
