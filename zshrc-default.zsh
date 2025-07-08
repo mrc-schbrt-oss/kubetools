@@ -21,13 +21,11 @@ alias kx=kubectx
 alias kn=kubens
 alias kd=kubectl-view_secret
 
-[ -f "/root/data/.kube/kubeconfig-flatten.yaml" ] || rm -f /root/data/.kube/kubeconfig-flatten.yaml
+rm -f /root/data/.kube/kubeconfig-flatten.yaml
+export KUBECONFIG=$(echo /root/data/.kube/*.yaml | tr ' ' ':')
+kubectl config view --flatten > /root/data/.kube/kubeconfig-flatten.yaml
+export KUBECONFIG=/root/data/.kube/kubeconfig-flatten.yaml
 
-if [[ -f "/root/data/.kube/*.yaml" ]]; then
-    export KUBECONFIG=$(echo /root/data/.kube/*.yaml | tr ' ' ':')
-    kubectl config view --flatten > /root/data/.kube/kubeconfig-flatten.yaml
-    export KUBECONFIG=/root/data/.kube/kubeconfig-flatten.yaml
-fi
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_CONFIG_FILE=~/data/.ssh/config
