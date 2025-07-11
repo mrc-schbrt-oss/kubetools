@@ -15,7 +15,6 @@ source <(flux completion zsh)
 source <(argocd completion zsh)
 source <(helm completion zsh)
 source <(cilium completion zsh)
-terraform -install-autocomplete
 
 alias k=kubectl
 alias kx=kubectx
