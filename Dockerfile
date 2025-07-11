@@ -32,7 +32,7 @@ RUN apk add --no-cache \
     TERRAFORM_VER=$(echo $TERRAFORM_VERSION | tr -d 'v') && \
     curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
     unzip terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
-    mv terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}/terraform /usr/bin/terraform && \
+    mv terraform /usr/bin/terraform && \
     chmod +x /usr/bin/terraform && \
     rm -rf terraform*
 
