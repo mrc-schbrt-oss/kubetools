@@ -15,6 +15,7 @@ source <(flux completion zsh)
 source <(argocd completion zsh)
 source <(helm completion zsh)
 source <(cilium completion zsh)
+source <(kubeone completion zsh)
 
 alias k=kubectl
 alias kx=kubectx

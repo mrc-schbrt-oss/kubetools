@@ -34,7 +34,15 @@ RUN apk add --no-cache \
     unzip terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
     mv terraform /usr/bin/terraform && \
     chmod +x /usr/bin/terraform && \
-    rm -rf terraform*
+    rm -rf terraform* && \
+    KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | jq -r .tag_name) && \
+    KUBEONE_VER=$(echo $KUBEONE_VERSION | tr -d 'v') && \
+    curl -LO https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
+    unzip kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
+    mv kubeone /usr/bin/kubeone && \
+    chmod +x /usr/bin/kubeone && \
+    rm -rf kubeone*
+
 
 # Krew separat, weil es env setzt + plugin-installation arch-spezifisch
 RUN set -eux; \
