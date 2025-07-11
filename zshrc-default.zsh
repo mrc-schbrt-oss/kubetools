@@ -15,19 +15,20 @@ source <(flux completion zsh)
 source <(argocd completion zsh)
 source <(helm completion zsh)
 source <(cilium completion zsh)
+terraform -install-autocomplete
 
 alias k=kubectl
 alias kx=kubectx
 alias kn=kubens
 alias kd=kubectl-view_secret
-
-rm -f /root/data/.kube/kubeconfig-flatten.yaml
-export KUBECONFIG=$(echo /root/data/.kube/*.yaml | tr ' ' ':')
-kubectl config view --flatten > /root/data/.kube/kubeconfig-flatten.yaml
-export KUBECONFIG=/root/data/.kube/kubeconfig-flatten.yaml
+alias tf=terraform
+rm -f ~/data/.kube/kubeconfig-flatten.yaml
+export KUBECONFIG=$(echo ~/data/.kube/*.yaml | tr ' ' ':')
+kubectl config view --flatten > ~/data/.kube/kubeconfig-flatten.yaml
+export KUBECONFIG=~/data/.kube/kubeconfig-flatten.yaml
 
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_CONFIG_FILE=~/data/.ssh/config
 export HISTFILE=~/data/.zsh_history
-export BYOBU_CONFIG_DIR=/root/data/.byobu
+export BYOBU_CONFIG_DIR=~/data/.byobu
