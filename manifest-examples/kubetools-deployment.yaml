@@ -41,18 +41,20 @@ spec:
         securityContext:
           runAsUser: 0
       volumes:
-      - name: kubeconfigs
-        secret:
-          secretName: kubetools-kubeconfig
       - name: data
         persistentVolumeClaim:
           claimName: kubetools-pvc
       #- name: zshrc
       #  configMap:
       #    name: zshrc
+      - name: kubeconfigs
+        secret:
+          secretName: kubetools-kubeconfig
+          defaultMode: 256
       - name: sshconfig
-        configMap:
-          name: sshconfig
+        secret:
+          secretName: sshconfig
+          defaultMode: 256
       - name: gitkeys
         secret:
           secretName: gitkey
