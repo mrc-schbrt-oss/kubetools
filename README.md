@@ -37,7 +37,7 @@ git clone https://github.com/mrc-schbrt-oss/kubetools.git
 cd kubetools
 
 # Build with Docker or Podman
-podman build -t kubetools .
+docker build -t kubetools .
 # or
 podman build -t kubetools .
 ```
@@ -100,7 +100,7 @@ alias kaf='kubectl apply -f'
   - `zsh`, `powerlevel10k`, `byobu`
   - `bash`, `coreutils`, `findutils`, `file`
 - **Kubernetes & Cloud:**
-  - `kubectl`, `k9s`, `helm`, `argo-cd`, `flux`, `velero`, `kubeseal`, `krew`
+  - `kubectl`, `k9s`, `helm`, `argocd`, `flux`, `velero`, `kubeseal`, `krew`
 - **Configuration & Automation:**
   - `ansible`, `yq`, `jq`, `gettext`, `envsubst`
 - **Networking & SSH:**
