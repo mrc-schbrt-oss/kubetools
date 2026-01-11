@@ -122,3 +122,5 @@ source <(kubectl completion zsh)
 alias k=kubectl
 alias kx=kubectx
 alias kn=kubens
+alias kgp='kubectl get pods'
+alias kaf='kubectl apply -f'
