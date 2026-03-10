@@ -3,7 +3,7 @@ FROM alpine:latest
 RUN apk add --no-cache \
     zsh bash git curl rsync vim tar openssh-client go jq yq \
     byobu ansible-core ansible-lint \
-    kubectl helm kubectx k9s flux \
+    kubectl helm kubectx k9s flux openbao \
     oh-my-zsh zsh-theme-powerlevel10k && \
     git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime && \
     /root/.vim_runtime/install_awesome_vimrc.sh && \
