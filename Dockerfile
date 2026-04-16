@@ -41,7 +41,8 @@ RUN apk add --no-cache \
     unzip kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
     mv kubeone /usr/bin/kubeone && \
     chmod +x /usr/bin/kubeone && \
-    rm -rf kubeone*
+    rm -rf kubeone* \
+    curl -fsSL https://claude.ai/install.sh | bash
 
 
 # Krew separat, weil es env setzt + plugin-installation arch-spezifisch
