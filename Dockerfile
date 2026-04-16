@@ -42,7 +42,9 @@ RUN apk add --no-cache \
     mv kubeone /usr/bin/kubeone && \
     chmod +x /usr/bin/kubeone && \
     rm -rf kubeone*  && \
-    curl -fsSL https://claude.ai/install.sh | bash
+    curl -fsSL https://claude.ai/install.sh | bash && \ 
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> .claude-path && \
+    source .claude-path
 
 
 # Krew separat, weil es env setzt + plugin-installation arch-spezifisch
