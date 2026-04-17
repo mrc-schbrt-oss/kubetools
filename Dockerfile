@@ -1,8 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-    zsh bash git curl rsync vim tar openssh-client go jq yq \
-    nodejs npm \
+    zsh bash git curl rsync vim openssh-client go jq yq nodejs npm tar gzip ca-certificates update-ca-certificates \
     byobu ansible-core ansible-lint \
     kubectl helm kubectx k9s flux \
     kubectl helm kubectx k9s flux openbao \
@@ -14,7 +13,34 @@ RUN apk add --no-cache \
     ansible-galaxy collection install community.general && \
     export GOOS=$(go env GOOS) GOARCH=$(go env GOARCH) && \
     npm install -g @anthropic-ai/claude-code && \
-    npm cache clean --force
+    npm cache clean --force && \
+    #Install CILIUM
+    CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
+    curl -L --fail https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-linux-${GOOS}.tar.gz -o cilium.tar.gz && \
+    tar xzvf cilium.tar.gz && \
+    mv cilium /usr/local/bin/ && \
+    chmod +x /usr/local/bin/cilium && \
+    rm cilium.tar.gz && \
+    #Install KUBESEAL
+    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    curl -L https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${GOOS#v}-linux-${ARCH}.tar.gz -o kubeseal.tar.gz && \
+    tar -xvzf kubeseal.tar.gz kubeseal && \
+    mv kubeseal /usr/local/bin/ && \
+    chmod +x /usr/local/bin/kubeseal && \
+    rm kubeseal.tar.gz && \
+    #Install Argocd
+    ARGOCD_VERSION=$(curl -s https://api.github.com/repos/argoproj/argo-cd/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${GOOS} && \
+    chmod +x /usr/local/bin/argocd && \
+    #Install Kubeone
+    KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    curl -L https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_linux_${GOOS}.zip -o kubeone.zip && \
+    unzip kubeone.zip && \
+    mv kubeone /usr/local/bin/ && \
+    chmod +x /usr/local/bin/kubeone && \
+    rm kubeone.zip
+
+
     #CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
     #curl -LO https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz && \
     #tar -C /usr/bin -xzvf cilium-${GOOS}-${GOARCH}.tar.gz && \
