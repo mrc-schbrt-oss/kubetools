@@ -41,7 +41,7 @@ RUN apk add --no-cache \
       | tar -C /usr/bin -xzvf - cilium && \
     # kubeseal
     KUBESEAL_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
-    curl -sSL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" \
+    curl -sSL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-${GOARCH}.tar.gz" \
       | tar -C /usr/bin -xzvf - kubeseal && \
     # argocd (plain text VERSION, kein JSON)
     ARGOCD_VERSION=$(curl -sSL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
