@@ -42,18 +42,18 @@ RUN apk add --no-cache \
     curl -LO https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz && \
     tar -C /usr/bin -xzvf cilium-${GOOS}-${GOARCH}.tar.gz && \
     rm cilium-${GOOS}-${GOARCH}.tar.gz* && \
-    # kubeseal – nutzt amd64/arm64
-    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/tags | jq -r '.[0].name' | cut -c 2-) && \
+    # kubeseal – /releases/latest statt /tags (anderes JSON-Format, rate-limit-sicher)
+    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
     curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
     tar -C /usr/bin -xzvf kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
     rm -rf kubeseal* && \
-    # argocd – nutzt amd64/arm64
+    # argocd – VERSION-Datei ist plain text, kein JSON
     ARGOCD_VERSION=$(curl -sSL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
-    curl -sSL -o /usr/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-${GOOS}-${GOARCH} && \
+    curl -sSL -o /usr/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-${GOOS}-${GOARCH}" && \
     chmod +x /usr/bin/argocd && \
-    # velero – nutzt amd64/arm64
-    VELERO_VERSION=$(curl -s https://api.github.com/repos/vmware-tanzu/velero/tags | jq -r '.[0].name' | cut -c 2-) && \
-    curl -LO https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
+    # velero – /releases/latest statt /tags (anderes JSON-Format, rate-limit-sicher)
+    VELERO_VERSION=$(curl -s https://api.github.com/repos/vmware-tanzu/velero/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
+    curl -LO "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
     tar -xzvf velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
     mv velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}/velero /usr/bin/ && \
     chmod +x /usr/bin/velero && \
