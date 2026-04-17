@@ -22,12 +22,12 @@ RUN apk add --no-cache \
     chmod +x /usr/local/bin/cilium && \
     rm cilium.tar.gz && \
     #Install KUBESEAL
-    #KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep tag_name | cut -d '"' -f4) && \
-    #curl -L https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-${GOOS}-{GOARCH}.tar.gz -o kubeseal.tar.gz && \
-    #tar -xvzf kubeseal.tar.gz kubeseal && \
-    #mv kubeseal /usr/local/bin/ && \
-    #chmod +x /usr/local/bin/kubeseal && \
-    #rm kubeseal.tar.gz && \
+    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-${GOOS}-${GOARCH}.tar.gz" -o kubeseal.tar.gz && \
+    tar -xvzf kubeseal.tar.gz kubeseal && \
+    mv kubeseal /usr/local/bin/ && \
+    chmod +x /usr/local/bin/kubeseal && \
+    rm kubeseal.tar.gz && \
     #Install Argocd
     #ARGOCD_VERSION=$(curl -s https://api.github.com/repos/argoproj/argo-cd/releases/latest | grep tag_name | cut -d '"' -f4) && \
     #curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${GOOS} && \
