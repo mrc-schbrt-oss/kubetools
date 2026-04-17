@@ -38,5 +38,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:${{ steps.vars.outputs.DATE_TAG }}
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}

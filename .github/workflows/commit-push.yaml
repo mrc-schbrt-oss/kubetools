@@ -3,6 +3,7 @@ name: Build & Push DockerHub
 on:
   push:
     branches: [ "main" ]
+    #tags: [ 'v*.*.*' ]
 
 jobs:
   docker:
@@ -29,6 +30,16 @@ jobs:
         id: vars
         run: echo "DATE_TAG=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
 
+      #- name: Generate metadata & tags
+      #  id: meta
+      #  uses: docker/metadata-action@v5
+      #  with:
+      #    images: ${{ secrets.DOCKERHUB_USERNAME }}/kubetools
+      #    tags: |
+      #      type=ref,event=branch
+      #      type=ref,event=tag
+      #      type=semver,pattern={{version}}
+
       - name: Build & push Docker images
         uses: docker/build-push-action@v5
         with:
@@ -39,7 +50,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/kubetools:${{ steps.vars.outputs.DATE_TAG }}
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          #tags: ${{ steps.meta.outputs.tags }}
+          #labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
