@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+ARG GITHUB_TOKEN
+
 RUN apk add --no-cache \
     zsh bash git curl rsync vim tar openssh-client go jq yq \
     byobu ansible ansible-lint \
@@ -15,14 +17,15 @@ RUN apk add --no-cache \
     /root/.vim_runtime/install_awesome_vimrc.sh && \
     ansible-galaxy collection install community.general && \
     export GOOS=$(go env GOOS) GOARCH=$(go env GOARCH) && \
-    # Architektur-Mapping: go env liefert amd64/arm64, manche Tools nutzen x86_64/aarch64
+    export GH_AUTH="${GITHUB_TOKEN:+-H \"Authorization: Bearer ${GITHUB_TOKEN}\"}" && \
+    # Architektur-Mapping: go env liefert amd64/arm64, manche Tools nutzen x86_64
     case "${GOARCH}" in \
       amd64) ARCH_ALT="x86_64" ;; \
       arm64) ARCH_ALT="aarch64" ;; \
       *)     ARCH_ALT="${GOARCH}" ;; \
     esac && \
     # kubectx – nutzt x86_64/arm64 im Dateinamen
-    KUBECTX_VERSION=$(curl -s https://api.github.com/repos/ahmetb/kubectx/releases/latest | jq -r .tag_name) && \
+    KUBECTX_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/ahmetb/kubectx/releases/latest | jq -r .tag_name) && \
     case "${GOARCH}" in \
       amd64) KUBECTX_ARCH="x86_64" ;; \
       arm64) KUBECTX_ARCH="arm64" ;; \
@@ -33,47 +36,45 @@ RUN apk add --no-cache \
     # flux CLI (kein apk-Paket) – nutzt amd64/arm64
     curl -sSL https://fluxcd.io/install.sh | bash && \
     # openbao – nutzt amd64/arm64
-    OPENBAO_VERSION=$(curl -s https://api.github.com/repos/openbao/openbao/releases/latest | jq -r .tag_name) && \
+    OPENBAO_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/openbao/openbao/releases/latest | jq -r .tag_name) && \
     OPENBAO_VER=$(echo $OPENBAO_VERSION | tr -d 'v') && \
     curl -sSL -o /usr/bin/bao "https://github.com/openbao/openbao/releases/download/${OPENBAO_VERSION}/bao_${OPENBAO_VER}_linux_${GOARCH}" && \
     chmod +x /usr/bin/bao && \
     # cilium – nutzt amd64/arm64
     CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
-    curl -LO https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz && \
-    tar -C /usr/bin -xzvf cilium-${GOOS}-${GOARCH}.tar.gz && \
-    rm cilium-${GOOS}-${GOARCH}.tar.gz* && \
-    # kubeseal – /releases/latest statt /tags (anderes JSON-Format, rate-limit-sicher)
-    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
-    curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
-    tar -C /usr/bin -xzvf kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
-    rm -rf kubeseal* && \
+    curl -sSL "https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz" \
+      | tar -C /usr/bin -xzvf - cilium && \
+    # kubeseal
+    KUBESEAL_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
+    curl -sSL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" \
+      | tar -C /usr/bin -xzvf - kubeseal && \
     # argocd – VERSION-Datei ist plain text, kein JSON
     ARGOCD_VERSION=$(curl -sSL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
     curl -sSL -o /usr/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-${GOOS}-${GOARCH}" && \
     chmod +x /usr/bin/argocd && \
-    # velero – /releases/latest statt /tags (anderes JSON-Format, rate-limit-sicher)
-    VELERO_VERSION=$(curl -s https://api.github.com/repos/vmware-tanzu/velero/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
-    curl -LO "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
-    tar -xzvf velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
+    # velero
+    VELERO_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/vmware-tanzu/velero/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
+    curl -sSL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz" \
+      | tar -xzvf - && \
     mv velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}/velero /usr/bin/ && \
     chmod +x /usr/bin/velero && \
     rm -rf velero* && \
-    # terraform – nutzt amd64/arm64
-    TERRAFORM_VERSION=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
+    # terraform
+    TERRAFORM_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
     TERRAFORM_VER=$(echo $TERRAFORM_VERSION | tr -d 'v') && \
-    curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
-    unzip terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
+    curl -sSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip" -o terraform.zip && \
+    unzip terraform.zip && \
     mv terraform /usr/bin/terraform && \
     chmod +x /usr/bin/terraform && \
-    rm -rf terraform* && \
-    # kubeone – nutzt amd64/arm64
-    KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | jq -r .tag_name) && \
+    rm -f terraform.zip && \
+    # kubeone
+    KUBEONE_VERSION=$(curl -s ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} https://api.github.com/repos/kubermatic/kubeone/releases/latest | jq -r .tag_name) && \
     KUBEONE_VER=$(echo $KUBEONE_VERSION | tr -d 'v') && \
-    curl -LO https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
-    unzip kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
+    curl -sSL "https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip" -o kubeone.zip && \
+    unzip kubeone.zip kubeone && \
     mv kubeone /usr/bin/kubeone && \
     chmod +x /usr/bin/kubeone && \
-    rm -rf kubeone* && \
+    rm -f kubeone.zip && \
     # claude code cli
     npm install -g @anthropic-ai/claude-code && \
     npm cache clean --force
