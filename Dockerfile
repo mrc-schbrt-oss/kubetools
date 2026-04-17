@@ -38,7 +38,7 @@ RUN apk add --no-cache \
     unzip -o kubeone_${KUBEONE_VERSION#v}_${GOOS}_${GOARCH}.zip && \
     mv kubeone /usr/local/bin/ && \
     chmod +x /usr/local/bin/kubeone && \
-    rm kubeone.zip
+    rm kubeone.zip && \
     #Install Velero
     VELERO_VERSION=$(curl -sL https://api.github.com/repos/vmware-tanzu/velero/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/') && \
     curl -LO --fail  https://github.com/vmware-tanzu/velero/releases/download/${VELERO_VERSION}/velero-${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
