@@ -44,7 +44,7 @@ RUN apk add --no-cache \
     rm -rf kubeone*
 
 
-# Krew separat, weil es env setzt + plugin-installation arch-spezifisch
+## Krew separat, weil es env setzt + plugin-installation arch-spezifisch
 RUN set -eux; \
   cd "$(mktemp -d)"; \
   OS="$(uname | tr '[:upper:]' '[:lower:]')"; \
