@@ -33,12 +33,12 @@ RUN apk add --no-cache \
     #curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${GOOS} && \
     #chmod +x /usr/local/bin/argocd && \
     #Install Kubeone
-    KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
-    curl -L https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_${GOARCH}_${GOARCH}.zip -o kubeone.zip && \
-    unzip kubeone.zip && \
-    mv kubeone /usr/local/bin/ && \
-    chmod +x /usr/local/bin/kubeone && \
-    rm kubeone.zip
+    #KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    #curl -L https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_${GOARCH}_${GOARCH}.zip -o kubeone.zip && \
+    #unzip kubeone.zip && \
+    #mv kubeone /usr/local/bin/ && \
+    #chmod +x /usr/local/bin/kubeone && \
+    #rm kubeone.zip
 
 
     #CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
