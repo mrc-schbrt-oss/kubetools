@@ -33,12 +33,12 @@ RUN apk add --no-cache \
     chmod +x argocd && \
     mv argocd /usr/local/bin/ && \
     #Install Kubeone
-    #KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
-    #curl -L https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_${GOARCH}_${GOARCH}.zip -o kubeone.zip && \
-    #unzip kubeone.zip && \
-    #mv kubeone /usr/local/bin/ && \
-    #chmod +x /usr/local/bin/kubeone && \
-    #rm kubeone.zip
+    KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
+    curl -LO --fail https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_${GOOS}_${GOARCH}.zip && \
+    unzip -o kubeone_${KUBEONE_VERSION#v}_${GOOS}_${GOARCH}.zip && \
+    mv kubeone /usr/local/bin/ && \
+    chmod +x /usr/local/bin/kubeone && \
+    rm kubeone.zip
     #Install Velero
     VELERO_VERSION=$(curl -sL https://api.github.com/repos/vmware-tanzu/velero/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/') && \
     curl -LO --fail  https://github.com/vmware-tanzu/velero/releases/download/${VELERO_VERSION}/velero-${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
