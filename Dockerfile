@@ -17,9 +17,9 @@ RUN apk add --no-cache \
     tar -C /usr/bin -xzvf cilium-${GOOS}-${GOARCH}.tar.gz && \
     rm cilium-${GOOS}-${GOARCH}.tar.gz* && \
     KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/tags | jq -r '.[0].name' | cut -c 2-) && \
-    curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
-    tar -C /usr/bin -xzvf kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
-    rm -rf kubeseal* && \
+    #curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz" && \
+    #tar -C /usr/bin -xzvf kubeseal-${KUBESEAL_VERSION}-${GOOS}-${GOARCH}.tar.gz && \
+    #rm -rf kubeseal* && \
     ARGOCD_VERSION=$(curl -sSL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
     curl -sSL -o /usr/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-${GOOS}-${GOARCH} && \
     chmod +x /usr/bin/argocd && \
