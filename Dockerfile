@@ -2,6 +2,7 @@ FROM alpine:latest
 
 RUN apk add --no-cache \
     zsh bash git curl rsync vim tar openssh-client go jq yq \
+    nodejs npm \
     byobu ansible-core ansible-lint \
     kubectl helm kubectx k9s flux \
     kubectl helm kubectx k9s flux openbao \
@@ -11,7 +12,9 @@ RUN apk add --no-cache \
     mkdir -p ~/.local/share/zsh/plugins && \
     ln -s /usr/share/zsh/plugins/powerlevel10k ~/.local/share/zsh/plugins/ && \
     ansible-galaxy collection install community.general && \
-    export GOOS=$(go env GOOS) GOARCH=$(go env GOARCH)
+    export GOOS=$(go env GOOS) GOARCH=$(go env GOARCH) && \
+    npm install -g @anthropic-ai/claude-code && \
+    npm cache clean --force
     #CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
     #curl -LO https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz && \
     #tar -C /usr/bin -xzvf cilium-${GOOS}-${GOARCH}.tar.gz && \
