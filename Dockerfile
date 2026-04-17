@@ -23,7 +23,7 @@ RUN apk add --no-cache \
     rm cilium.tar.gz && \
     #Install KUBESEAL
     KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep tag_name | cut -d '"' -f4) && \
-    curl -LO "https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-${GOOS}-${GOARCH}.tar.gz" -o kubeseal.tar.gz && \
+    curl -L --fail "https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-${GOOS}-${GOARCH}.tar.gz" -o kubeseal.tar.gz && \
     tar -xvzf kubeseal.tar.gz kubeseal && \
     mv kubeseal /usr/local/bin/ && \
     chmod +x /usr/local/bin/kubeseal && \
