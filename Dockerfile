@@ -4,14 +4,13 @@ RUN apk add --no-cache \
     zsh bash git curl rsync vim tar openssh-client go jq yq \
     byobu ansible ansible-lint \
     kubectl helm k9s \
-    powerlevel10k \
     nodejs npm \
     unzip && \
     # oh-my-zsh via Install-Script (kein apk-Paket)
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
-    # powerlevel10k symlink
-    mkdir -p ~/.local/share/zsh/plugins && \
-    ln -s /usr/share/zsh/plugins/powerlevel10k ~/.local/share/zsh/plugins/ && \
+    # powerlevel10k via git clone (nicht in alpine stable repos)
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        /root/.oh-my-zsh/custom/themes/powerlevel10k && \
     git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime && \
     /root/.vim_runtime/install_awesome_vimrc.sh && \
     ansible-galaxy collection install community.general && \
