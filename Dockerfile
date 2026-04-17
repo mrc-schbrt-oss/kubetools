@@ -25,47 +25,47 @@ RUN apk add --no-cache \
       *)     KUBECTX_ARCH="${GOARCH}" ;; \
     esac && \
     # kubectx
-    KUBECTX_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/ahmetb/kubectx/releases/latest | jq -r .tag_name) && \
-    curl -sSL "https://github.com/ahmetb/kubectx/releases/download/${KUBECTX_VERSION}/kubectx_${KUBECTX_VERSION}_linux_${KUBECTX_ARCH}.tar.gz" \
+    KUBECTX_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/ahmetb/kubectx/releases/latest | jq -r .tag_name) && \
+    curl -sSfL "https://github.com/ahmetb/kubectx/releases/download/${KUBECTX_VERSION}/kubectx_${KUBECTX_VERSION}_linux_${KUBECTX_ARCH}.tar.gz" \
       | tar -C /usr/bin -xzvf - kubectx && \
     # flux CLI
-    curl -sSL https://fluxcd.io/install.sh | bash && \
+    curl -sSfL https://fluxcd.io/install.sh | bash && \
     # openbao
-    OPENBAO_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/openbao/openbao/releases/latest | jq -r .tag_name) && \
+    OPENBAO_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/openbao/openbao/releases/latest | jq -r .tag_name) && \
     OPENBAO_VER=$(echo $OPENBAO_VERSION | tr -d 'v') && \
-    curl -sSL -o /usr/bin/bao "https://github.com/openbao/openbao/releases/download/${OPENBAO_VERSION}/bao_${OPENBAO_VER}_linux_${GOARCH}" && \
+    curl -sSfL -o /usr/bin/bao "https://github.com/openbao/openbao/releases/download/${OPENBAO_VERSION}/bao_${OPENBAO_VER}_linux_${GOARCH}" && \
     chmod +x /usr/bin/bao && \
     # cilium
-    CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
-    curl -sSL "https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz" \
+    CILIUM_VERSION=$(curl -sf https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt) && \
+    curl -sSfL "https://github.com/cilium/cilium-cli/releases/download/${CILIUM_VERSION}/cilium-${GOOS}-${GOARCH}.tar.gz" \
       | tar -C /usr/bin -xzvf - cilium && \
     # kubeseal
-    KUBESEAL_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
-    curl -sSL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-${GOARCH}.tar.gz" \
+    KUBESEAL_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
+    curl -sSfL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-${GOARCH}.tar.gz" \
       | tar -C /usr/bin -xzvf - kubeseal && \
     # argocd (plain text VERSION, kein JSON)
-    ARGOCD_VERSION=$(curl -sSL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
-    curl -sSL -o /usr/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-${GOOS}-${GOARCH}" && \
+    ARGOCD_VERSION=$(curl -sSfL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION | tr -d '[:space:]') && \
+    curl -sSfL -o /usr/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-linux-${GOARCH}" && \
     chmod +x /usr/bin/argocd && \
     # velero
-    VELERO_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/vmware-tanzu/velero/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
-    curl -sSL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}.tar.gz" \
+    VELERO_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/vmware-tanzu/velero/releases/latest | jq -r '.tag_name' | cut -c 2-) && \
+    curl -sSfL "https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-${GOARCH}.tar.gz" \
       | tar -xzvf - && \
-    mv velero-v${VELERO_VERSION}-${GOOS}-${GOARCH}/velero /usr/bin/ && \
+    mv velero-v${VELERO_VERSION}-linux-${GOARCH}/velero /usr/bin/ && \
     chmod +x /usr/bin/velero && \
     rm -rf velero* && \
     # terraform
-    TERRAFORM_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
+    TERRAFORM_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
     TERRAFORM_VER=$(echo $TERRAFORM_VERSION | tr -d 'v') && \
-    curl -sSL "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip" -o terraform.zip && \
+    curl -sSfL "https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip" -o terraform.zip && \
     unzip terraform.zip && \
     mv terraform /usr/bin/terraform && \
     chmod +x /usr/bin/terraform && \
     rm -f terraform.zip && \
     # kubeone
-    KUBEONE_VERSION=$(curl -s -H "${GH_HEADER}" https://api.github.com/repos/kubermatic/kubeone/releases/latest | jq -r .tag_name) && \
+    KUBEONE_VERSION=$(curl -sf -H "${GH_HEADER}" https://api.github.com/repos/kubermatic/kubeone/releases/latest | jq -r .tag_name) && \
     KUBEONE_VER=$(echo $KUBEONE_VERSION | tr -d 'v') && \
-    curl -sSL "https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip" -o kubeone.zip && \
+    curl -sSfL "https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip" -o kubeone.zip && \
     unzip kubeone.zip kubeone && \
     mv kubeone /usr/bin/kubeone && \
     chmod +x /usr/bin/kubeone && \
