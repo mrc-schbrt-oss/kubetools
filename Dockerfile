@@ -29,9 +29,9 @@ RUN apk add --no-cache \
     chmod +x /usr/local/bin/kubeseal && \
     rm kubeseal.tar.gz && \
     #Install Argocd
-    #ARGOCD_VERSION=$(curl -s https://api.github.com/repos/argoproj/argo-cd/releases/latest | grep tag_name | cut -d '"' -f4) && \
-    #curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${GOOS} && \
-    #chmod +x /usr/local/bin/argocd && \
+    curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-${GOOS}-${GOARCH} && \
+    chmod +x argocd && \
+    mv argocd /usr/local/bin/ && \
     #Install Kubeone
     #KUBEONE_VERSION=$(curl -s https://api.github.com/repos/kubermatic/kubeone/releases/latest | grep tag_name | cut -d '"' -f4) && \
     #curl -L https://github.com/kubermatic/kubeone/releases/download/${KUBEONE_VERSION}/kubeone_${KUBEONE_VERSION#v}_${GOARCH}_${GOARCH}.zip -o kubeone.zip && \
