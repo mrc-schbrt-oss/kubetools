@@ -41,10 +41,7 @@ RUN apk add --no-cache \
     unzip kubeone_${KUBEONE_VER}_${GOOS}_${GOARCH}.zip && \
     mv kubeone /usr/bin/kubeone && \
     chmod +x /usr/bin/kubeone && \
-    rm -rf kubeone*  && \
-    apk add --no-cache nodejs npm && \
-    npm install -g @anthropic-ai/claude-code && \
-    npm cache clean --force
+    rm -rf kubeone*
 
 
 # Krew separat, weil es env setzt + plugin-installation arch-spezifisch
