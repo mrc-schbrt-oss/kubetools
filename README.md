@@ -1,7 +1,7 @@
 # kubetools
 
 
-![Banner](./assets/kubetools-logo-optimized.jpg)
+![Banner](./assets/kubetools_banner.svg)
 
 
 **kubetools** is a lightweight containerized DevOps toolkit designed for Kubernetes operators, SREs, and platform engineers. It packages a comprehensive set of CLI tools — from cluster management and GitOps to infrastructure-as-code and AI-assisted workflows — inside a pre-configured ZSH shell environment, ready for interactive use, CI/CD pipelines, or in-cluster deployment as a pod.
@@ -19,6 +19,12 @@
 - **Persistent data directory** at `/root/data` — mount a volume here to persist kubeconfigs, SSH keys, shell history, and byobu sessions
 - **Multi-arch builds** — supports `amd64`, `arm64`, and `arm`
 - **GitHub Actions workflows** for automated container rebuilds
+
+---
+
+## 🏗️ Architecture
+
+![Architecture](./assets/kubetools_architecture.svg)
 
 ---
 
