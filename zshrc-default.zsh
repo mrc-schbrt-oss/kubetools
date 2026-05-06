@@ -21,7 +21,7 @@ alias k=kubectl
 alias kx=kubectx
 alias kn=kubens
 alias kd=kubectl-view_secret
-alias tf=terraform
+alias tf=tofu
 rm -f ~/data/.kube/kubeconfig-flatten.yaml
 export KUBECONFIG=$(echo ~/data/.kube/*.yaml | tr ' ' ':')
 kubectl config view --flatten > ~/data/.kube/kubeconfig-flatten.yaml

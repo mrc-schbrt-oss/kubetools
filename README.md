@@ -10,7 +10,7 @@
 
 ## ✨ Features
 
-- **30+ CLI tools** preinstalled: `kubectl`, `helm`, `kubectx`/`kubens`, `k9s`, `argocd`, `flux`, `velero`, `kubeseal`, `cilium`, `kubeone`, `terraform`, `openbao`, `ansible`, `claude`, and more
+- **30+ CLI tools** preinstalled: `kubectl`, `helm`, `kubectx`/`kubens`, `k9s`, `argocd`, `flux`, `velero`, `kubeseal`, `cilium`, `kubeone`, `opentofu`, `openbao`, `ansible`, `rclone`, `claude`, and more
 - **Krew plugin manager** with 19 curated kubectl plugins pre-installed
 - **Shell completions** auto-loaded for `kubectl`, `helm`, `argocd`, `flux`, `cilium`, and `kubeone`
 - **Automatic kubeconfig merging** — all `~/data/.kube/*.yaml` files are merged and flattened on startup
@@ -34,7 +34,7 @@
 - Platform engineering and automation workflows
 - CI/CD pipeline executor with pre-installed toolchain
 - GitOps operations with Flux and ArgoCD
-- Infrastructure provisioning with Terraform and Ansible
+- Infrastructure provisioning with OpenTofu and Ansible
 - AI-assisted workflows via Claude Code CLI
 
 ---
@@ -122,7 +122,7 @@ kubectl exec -it <pod-name> -- zsh
 
 | Tool | Description |
 |---|---|
-| `terraform` | Infrastructure provisioning by HashiCorp |
+| `opentofu` | Open-source Terraform fork for infrastructure provisioning |
 | `ansible` | IT automation and configuration management |
 | `ansible-lint` | Linter for Ansible playbooks and roles |
 | `openbao` | Open-source HashiCorp Vault fork for secrets management |
@@ -151,6 +151,7 @@ kubectl exec -it <pod-name> -- zsh
 |---|---|
 | `curl` | HTTP/HTTPS client |
 | `rsync` | File synchronization |
+| `rclone` | Cloud storage sync and management |
 | `openssh-client` | SSH client |
 
 ### Version Control
@@ -213,7 +214,7 @@ alias k=kubectl        # kubectl shorthand
 alias kx=kubectx       # switch cluster context
 alias kn=kubens        # switch namespace
 alias kd=kubectl-view_secret  # decode secrets
-alias tf=terraform     # terraform shorthand
+alias tf=tofu          # opentofu shorthand
 ```
 
 ### Shell completions
