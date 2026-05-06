@@ -2,10 +2,8 @@ FROM alpine:latest
 
 RUN apk add --no-cache \
     zsh bash git curl rsync vim openssh-client go jq yq nodejs npm tar gzip ca-certificates \
-    byobu ansible-core ansible-lint \
-    kubectl helm kubectx k9s flux \
-    kubectl helm kubectx k9s flux openbao \
-    oh-my-zsh zsh-theme-powerlevel10k && \
+    byobu ansible-core ansible-lint kubectl helm kubectx k9s flux openbao opentofu \
+    oh-my-zsh zsh-theme-powerlevel10k rclone rclone-zsh-completion && \
     git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime && \
     /root/.vim_runtime/install_awesome_vimrc.sh && \
     mkdir -p ~/.local/share/zsh/plugins && \
@@ -46,13 +44,13 @@ RUN apk add --no-cache \
     mv velero-${VELERO_VERSION}-${GOOS}-${GOARCH}/velero /usr/bin/ && \
     chmod +x /usr/bin/velero && \
     rm -rf velero* && \
-    TERRAFORM_VERSION=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
-    TERRAFORM_VER=$(echo $TERRAFORM_VERSION | tr -d 'v') && \
-    curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
-    unzip terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
-    mv terraform /usr/bin/terraform && \
-    chmod +x /usr/bin/terraform && \
-    rm -rf terraform*
+    #TERRAFORM_VERSION=$(curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | jq -r .tag_name) && \
+    #TERRAFORM_VER=$(echo $TERRAFORM_VERSION | tr -d 'v') && \
+    #curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VER}/terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
+    #unzip terraform_${TERRAFORM_VER}_${GOOS}_${GOARCH}.zip && \
+    #mv terraform /usr/bin/terraform && \
+    #chmod +x /usr/bin/terraform && \
+    #rm -rf terraform*
 
 # Krew separat, weil es env setzt + plugin-installation arch-spezifisch
 RUN set -eux; \
