@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk add --no-cache \
-    zsh bash git curl rsync vim openssh-client go jq yq nodejs npm tar gzip ca-certificates \
+    zsh bash git curl rsync vim vimdiff openssh-client go jq yq nodejs npm tar gzip ca-certificates \
     byobu ansible-core ansible-lint kubectl helm kubectx k9s flux openbao opentofu \
     oh-my-zsh zsh-theme-powerlevel10k rclone rclone-zsh-completion && \
     git clone --depth=1 https://github.com/amix/vimrc.git /root/.vim_runtime && \
